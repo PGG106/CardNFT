@@ -4,7 +4,7 @@ module.exports = async ({ getNamedAccounts }) => {
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
 
-    // Random IPFS NFT
+    // Random Card NFT
     const randomIpfsNft = await ethers.getContract("RandomIpfsNft", deployer)
     const mintFee = await randomIpfsNft.getMintFee()
     const randomIpfsNftMintTx = await randomIpfsNft.requestNft({ value: mintFee.toString() })
@@ -22,7 +22,11 @@ module.exports = async ({ getNamedAccounts }) => {
             await vrfCoordinatorV2Mock.fulfillRandomWords(requestId, randomIpfsNft.address)
         }
     })
-    console.log(`Random IPFS NFT index 0 tokenURI: ${await randomIpfsNft.tokenURI(0)}`)
-    console.log(`Rng the token was minted with: ${await randomIpfsNft.getLastRng()}`)
+    const token_rng = await randomIpfsNft.getLastRng()
+    const token_counter = (await randomIpfsNft.getTokenCounter()) - 1
+    console.log(token_counter)
+    const token_uri = await randomIpfsNft.getDogTokenUris(token_counter)
+    console.log(`the nft will be minted with the following rng seed: ${token_rng}`)
+    console.log(`New Random Card NFT minted tokenURI: ${token_uri}`)
 }
 module.exports.tags = ["all", "mint"]
