@@ -23,5 +23,6 @@ module.exports = async ({ getNamedAccounts }) => {
         }
     })
     console.log(`Random IPFS NFT index 0 tokenURI: ${await randomIpfsNft.tokenURI(0)}`)
+    console.log(`Rng the token was minted with: ${await randomIpfsNft.getLastRng()}`)
 }
 module.exports.tags = ["all", "mint"]
