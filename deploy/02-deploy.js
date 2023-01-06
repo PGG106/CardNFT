@@ -6,9 +6,11 @@ const { storeImages, storeTokenUriMetadata } = require("../utils/uploadToPinata"
 const FUND_AMOUNT = "1000000000000000000000"
 const imagesLocation = "./images/randomNft/"
 let tokenUris = [
-    "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo",
-    "ipfs://QmYQC5aGZu2PTH8XzbJrbDnvhj3gVs7ya33H9mqUNvST3d",
-    "ipfs://QmZYmH5iDbD6v3U2ixoVAjioSzvWJszDzYdbeCLquGSpVm",
+    "ipfs://QmZMovhWVESpvR4kGuw1BvbzztCRx1YzSmNTJVZmDZnZGS",
+    "ipfs://Qmcr83pY28axMMYhBsfeo5BRccH7GuGVAzuWiHoJVK3wdk",
+    "ipfs://Qmf63wXan784D6PgmuX6vT41LPKR7gqQ6KicgY7WRr7Ewt",
+    "ipfs://QmZunVbJgf3vCWbzTvnEuwVd66whp89YRyRgUdwyzx1L8W",
+    "ipfs://QmdeqGnbkVjERFi1Tu6qeXgYzea8CZbDyU1MAQjZx7fzNW",
 ]
 
 const metadataTemplate = {
@@ -17,8 +19,8 @@ const metadataTemplate = {
     image: "",
     attributes: [
         {
-            trait_type: "Cuteness",
-            value: 100,
+            trait_type: "Attack",
+            value: 1000,
         },
     ],
 }
@@ -57,7 +59,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         networkConfig[chainId]["callbackGasLimit"],
         tokenUris,
     ]
-    const randomIpfsNft = await deploy("RandomIpfsNft", {
+    const randomIpfsNft = await deploy("CardNft", {
         from: deployer,
         args: arguments,
         log: true,
@@ -75,15 +77,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 }
 
 async function handleTokenUris() {
-    // Check out https://github.com/PatrickAlphaC/nft-mix for a pythonic version of uploading
-    // to the raw IPFS-daemon from https://docs.ipfs.io/how-to/command-line-quick-start/
-    // You could also look at pinata https://www.pinata.cloud/
     tokenUris = []
     const { responses: imageUploadResponses, files } = await storeImages(imagesLocation)
     for (imageUploadResponseIndex in imageUploadResponses) {
         let tokenUriMetadata = { ...metadataTemplate }
         tokenUriMetadata.name = files[imageUploadResponseIndex].replace(".png", "")
-        tokenUriMetadata.description = `An adorable ${tokenUriMetadata.name} pup!`
+        tokenUriMetadata.description = `A monster card!`
         tokenUriMetadata.image = `ipfs://${imageUploadResponses[imageUploadResponseIndex].IpfsHash}`
         console.log(`Uploading ${tokenUriMetadata.name}...`)
         const metadataUploadResponse = await storeTokenUriMetadata(tokenUriMetadata)

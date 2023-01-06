@@ -7,17 +7,19 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "hardhat/console.sol";
 
-error RandomIpfsNft__AlreadyInitialized();
-error RandomIpfsNft__NeedMoreETHSent();
-error RandomIpfsNft__RangeOutOfBounds();
-error RandomIpfsNft__TransferFailed();
+error CardNft__AlreadyInitialized();
+error CardNft__NeedMoreETHSent();
+error CardNft__RangeOutOfBounds();
+error CardNft__TransferFailed();
 
-contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
+contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     // Types
-    enum Breed {
-        PUG,
-        SHIBA_INU,
-        ST_BERNARD
+    enum Rarity {
+        SecretRare,
+        UltraRare,
+        SuperRare,
+        Rare,
+        Common
     }
 
     // Chainlink VRF Variables
@@ -41,7 +43,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
 
     // Events
     event NftRequested(uint256 indexed requestId, address requester);
-    event NftMinted(Breed breed, address minter);
+    event NftMinted(Rarity rarity, address minter);
 
     constructor(
         address vrfCoordinatorV2,
@@ -49,20 +51,20 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         bytes32 gasLane, // keyHash
         uint256 mintFee,
         uint32 callbackGasLimit,
-        string[3] memory dogTokenUris
+        string[5] memory cardTokenUris
     ) VRFConsumerBaseV2(vrfCoordinatorV2) ERC721("Random IPFS NFT", "RIN") {
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
         i_mintFee = mintFee;
         i_callbackGasLimit = callbackGasLimit;
-        _initializeContract(dogTokenUris);
+        _initializeContract(cardTokenUris);
         s_tokenCounter = 0;
     }
 
     function requestNft() public payable returns (uint256 requestId) {
         if (msg.value < i_mintFee) {
-            revert RandomIpfsNft__NeedMoreETHSent();
+            revert CardNft__NeedMoreETHSent();
         }
         requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
@@ -82,44 +84,41 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         s_tokenCounter = s_tokenCounter + 1;
         last_rng = randomWords[0];
         uint256 moddedRng = last_rng % MAX_CHANCE_VALUE;
-        Breed dogBreed = getBreedFromModdedRng(moddedRng);
+        Rarity dogBreed = getRarityFromModdedRng(moddedRng);
         _safeMint(dogOwner, newItemId);
         _setTokenURI(newItemId, s_dogTokenUris[uint256(dogBreed)]);
         emit NftMinted(dogBreed, dogOwner);
     }
 
-    function getChanceArray() public pure returns (uint256[3] memory) {
-        return [10, 40, MAX_CHANCE_VALUE];
+    function getChanceArray() public pure returns (uint256[5] memory) {
+        return [5, 10, 15, 25, MAX_CHANCE_VALUE];
     }
 
-    function _initializeContract(string[3] memory dogTokenUris) private {
+    function _initializeContract(string[5] memory cardTokenUris) private {
         if (s_initialized) {
-            revert RandomIpfsNft__AlreadyInitialized();
+            revert CardNft__AlreadyInitialized();
         }
-        s_dogTokenUris = dogTokenUris;
+        s_dogTokenUris = cardTokenUris;
         s_initialized = true;
     }
 
-    function getBreedFromModdedRng(uint256 moddedRng) public pure returns (Breed) {
+    function getRarityFromModdedRng(uint256 moddedRng) public pure returns (Rarity) {
         uint256 cumulativeSum = 0;
-        uint256[3] memory chanceArray = getChanceArray();
+        uint256[5] memory chanceArray = getChanceArray();
         for (uint256 i = 0; i < chanceArray.length; i++) {
-            // Pug = 0 - 9  (10%)
-            // Shiba-inu = 10 - 39  (30%)
-            // St. Bernard = 40 = 99 (60%)
             if (moddedRng >= cumulativeSum && moddedRng < chanceArray[i]) {
-                return Breed(i);
+                return Rarity(i);
             }
             cumulativeSum = chanceArray[i];
         }
-        revert RandomIpfsNft__RangeOutOfBounds();
+        revert CardNft__RangeOutOfBounds();
     }
 
     function withdraw() public onlyOwner {
         uint256 amount = address(this).balance;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         if (!success) {
-            revert RandomIpfsNft__TransferFailed();
+            revert CardNft__TransferFailed();
         }
     }
 

@@ -5,7 +5,7 @@ module.exports = async ({ getNamedAccounts }) => {
     const chainId = network.config.chainId
 
     // Random Card NFT
-    const randomIpfsNft = await ethers.getContract("RandomIpfsNft", deployer)
+    const randomIpfsNft = await ethers.getContract("CardNft", deployer)
     const mintFee = await randomIpfsNft.getMintFee()
     const randomIpfsNftMintTx = await randomIpfsNft.requestNft({ value: mintFee.toString() })
     const randomIpfsNftMintTxReceipt = await randomIpfsNftMintTx.wait(1)
