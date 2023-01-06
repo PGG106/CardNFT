@@ -34,7 +34,7 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     uint256 private immutable i_mintFee;
     uint256 private s_tokenCounter;
     uint256 internal constant MAX_CHANCE_VALUE = 100;
-    string[] internal s_dogTokenUris;
+    string[] internal s_cardTokenUris;
     bool private s_initialized;
     uint256 private last_rng;
 
@@ -79,15 +79,15 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     }
 
     function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
-        address dogOwner = s_requestIdToSender[requestId];
+        address cardMinter = s_requestIdToSender[requestId];
         uint256 newItemId = s_tokenCounter;
         s_tokenCounter = s_tokenCounter + 1;
         last_rng = randomWords[0];
         uint256 moddedRng = last_rng % MAX_CHANCE_VALUE;
-        Rarity dogBreed = getRarityFromModdedRng(moddedRng);
-        _safeMint(dogOwner, newItemId);
-        _setTokenURI(newItemId, s_dogTokenUris[uint256(dogBreed)]);
-        emit NftMinted(dogBreed, dogOwner);
+        Rarity cardRarity = getRarityFromModdedRng(moddedRng);
+        _safeMint(cardMinter, newItemId);
+        _setTokenURI(newItemId, s_cardTokenUris[uint256(cardRarity)]);
+        emit NftMinted(cardRarity, cardMinter);
     }
 
     function getChanceArray() public pure returns (uint256[5] memory) {
@@ -98,7 +98,7 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         if (s_initialized) {
             revert CardNft__AlreadyInitialized();
         }
-        s_dogTokenUris = cardTokenUris;
+        s_cardTokenUris = cardTokenUris;
         s_initialized = true;
     }
 
@@ -127,7 +127,7 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     }
 
     function getDogTokenUris(uint256 index) public view returns (string memory) {
-        return s_dogTokenUris[index];
+        return s_cardTokenUris[index];
     }
 
     function getInitialized() public view returns (bool) {
