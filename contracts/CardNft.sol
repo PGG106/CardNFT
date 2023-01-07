@@ -126,7 +126,7 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         return i_mintFee;
     }
 
-    function getDogTokenUris(uint256 index) public view returns (string memory) {
+    function getCardTokenUris(uint256 index) public view returns (string memory) {
         return s_cardTokenUris[index];
     }
 

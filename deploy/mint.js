@@ -25,7 +25,7 @@ module.exports = async ({ getNamedAccounts }) => {
     const token_rng = await randomIpfsNft.getLastRng()
     const token_counter = (await randomIpfsNft.getTokenCounter()) - 1
     console.log(token_counter)
-    const token_uri = await randomIpfsNft.getDogTokenUris(token_counter)
+    const token_uri = await randomIpfsNft.getCardTokenUris(token_counter)
     console.log(`the nft will be minted with the following rng seed: ${token_rng}`)
     console.log(`New Random Card NFT minted tokenURI: ${token_uri}`)
 }
