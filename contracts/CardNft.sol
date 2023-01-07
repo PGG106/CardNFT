@@ -52,7 +52,7 @@ contract CardNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         uint256 mintFee,
         uint32 callbackGasLimit,
         string[5] memory cardTokenUris
-    ) VRFConsumerBaseV2(vrfCoordinatorV2) ERC721("Random IPFS NFT", "RIN") {
+    ) VRFConsumerBaseV2(vrfCoordinatorV2) ERC721("Card NFT", "CRD") {
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
