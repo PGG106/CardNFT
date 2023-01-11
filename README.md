@@ -1,33 +1,9 @@
-# The Ultimate NFT Repo
-
-*[⌨️ (20:28:51) Lesson 14: Hardhat NFTs ](https://www.youtube.com/watch?v=gyMwXuJrbJQ&t=73731s)*
-
-[Full Repo](https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
-
-*This repo has been updated to work with Goerli over Rinkeby.*
-
-<br/>
-<p align="center">
-<img src="./images/randomNft/pug.png" width="225" alt="NFT Pug">
-<img src="./images/dynamicNft/happy.svg" width="225" alt="NFT Happy">
-<img src="./images/randomNft/shiba-inu.png" width="225" alt="NFT Shiba">
-<img src="./images/dynamicNft/frown.svg" width="225" alt="NFT Frown">
-<img src="./images/randomNft/st-bernard.png" width="225" alt="NFT St.Bernard">
-</p>
-<br/>
-
-We go through creating 3 different kinds of NFTs.
-
-1. A Basic NFT
-2. IPFS Hosted NFT 
-   1. That uses Randomness to generate a unique NFT
-3. SVG NFT (Hosted 100% on-chain) 
-   1. Uses price feeds to be dynamic
+# Basic Card NFT based on the smartContractKit tutorial series
 
 
-# Getting Started
+[Tutorial Repo](https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
 
-## Requirements
+# Requirements
 
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   - You'll know you did it right if you can run `git --version` and you see a response like `git version x.x.x`
@@ -39,22 +15,6 @@ We go through creating 3 different kinds of NFTs.
     - `yarn --version` and get an output like: `x.x.x`
     - You might need to [install it with `npm`](https://classic.yarnpkg.com/lang/en/docs/install/) or `corepack`
 
-## Quickstart
-
-```
-git clone https://github.com/PatrickAlphaC/hardhat-nft-fcc
-cd hardhat-nft-fcc
-yarn
-```
-
-## Typescript
-
-If you want to get to typescript and you cloned the javascript version, just run:
-
-```
-git checkout typescript
-```
-
 
 # Useage
 
@@ -63,19 +23,6 @@ Deploy:
 ```
 yarn hardhat deploy
 ```
-
-## Testing
-
-```
-yarn hardhat test
-```
-
-### Test Coverage
-
-```
-yarn hardhat coverage
-```
-
 
 
 # Deployment to a testnet or mainnet
@@ -165,16 +112,3 @@ or, to fix:
 ```
 yarn lint:fix
 ```
-
-# Thank you!
-
-If you appreciated this, feel free to follow me or donate!
-
-ETH/Polygon/Avalanche/etc Address: 0x9680201d9c93d65a3603d2088d125e955c73BD65
-
-[![Patrick Collins Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/PatrickAlphaC)
-[![Patrick Collins YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UCn-3f8tw_E1jZvhuHatROwA)
-[![Patrick Collins Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/patrickalphac/)
-[![Patrick Collins Medium](https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@patrick.collins_58673/)
-
-
